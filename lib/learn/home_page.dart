@@ -97,15 +97,46 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("首页")),
-      body: _listView,
+      backgroundColor: Color(0xfff2f2f2),
+      body: MediaQuery.removePadding(
+        context: context,
+        removeTop: true,
+        child: _listView,
+      ),
     );
   }
 
-  //自定义appBar
-  // Widget get _appBar(){
-  //   return
-  // }
+  // 自定义appBar
+  Widget get _appBar {
+    return Column(
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0x66000000), Colors.transparent],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: Container(
+            padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+            height: 80,
+            decoration: BoxDecoration(
+                color:
+                    Color.fromARGB((appBarAlpha * 255).toInt(), 255, 255, 255)),
+          ),
+        ),
+        Container(
+          height: appBarAlpha > 0.2 ? 0.5 : 0,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(color: Colors.black12, blurRadius: 0.5),
+            ],
+          ),
+        )
+      ],
+    );
+  }
 
   //Swiper 用法：https://pub.dev/packages/flutter_swiper
   Widget get _banner {
