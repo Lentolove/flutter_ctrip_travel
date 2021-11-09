@@ -33,10 +33,6 @@ import 'package:flutter_trip2/model/travel_tab_model.dart';
 //   }
 // }
 
-const TRAVEL_URL =
-    'https://m.ctrip.com/restapi/soa2/16189/json/searchTripShootListForHomePageV2?_fxpcqlniredt=09031014111431397988&__gw_appid=99999999&__gw_ver=1.0&__gw_from=10650013707&__gw_platform=H5';
-const PAGE_SIZE = 10;
-
 ///旅拍主界面
 class TravelPage extends StatefulWidget {
   TravelPage({Key? key}) : super(key: key);
@@ -84,7 +80,7 @@ class _TravelPageState extends State<TravelPage>
                   return Tab(text: tab.labelName);
                 }).toList()),
           ),
-          Flexible(
+          Flexible(//充满整个剩余的可用空间
               child: TabBarView(
             controller: _controller,
             children: tabs.map<TravelItemPage>((TravelTab tab) {
@@ -109,11 +105,10 @@ class _TravelPageState extends State<TravelPage>
 
   //初始化tab数据
   void _loadData() async {
-    _controller = TabController(length: 0, vsync: this);
     try {
       TravelTabModel model = await TravelTabDao.fetch();
       _controller = TabController(
-          length: model.tabs.length, vsync: this); // fix tab label 空白问题
+          length: model.tabs.length, vsync: this);
       setState(() {
         tabs = model.tabs;
         travelTabModel = model;

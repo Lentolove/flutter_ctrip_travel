@@ -4,8 +4,10 @@ import 'package:flutter_trip2/model/home_model.dart';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 import 'package:flutter_trip2/widget/cached_image.dart';
 import 'package:flutter_trip2/widget/grid_nav.dart';
+import 'package:flutter_trip2/widget/loading_container.dart';
 import 'package:flutter_trip2/widget/local_nav.dart';
 import 'package:flutter_trip2/widget/sales_box.dart';
+import 'package:flutter_trip2/widget/search_bar.dart';
 import 'package:flutter_trip2/widget/sub_nav.dart';
 
 //home 首页
@@ -40,7 +42,7 @@ const APPBAR_SCROLL_OFFSET = 100;
 const SEARCH_BAR_DEFAULT_TEXT = '网红打卡地 景点 酒店 美食';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -97,21 +99,41 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff2f2f2),
-      body: MediaQuery.removePadding(
-        context: context,
-        removeTop: true,
-        child: _listView,
-      ),
-    );
+        backgroundColor: const Color(0xfff2f2f2),
+        body: LoadingContainer(
+          isLoading: _loading,
+          child: Stack(
+            children: [
+              MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                child: RefreshIndicator(
+                  onRefresh: _handleRefresh,
+                  child: NotificationListener(
+                    onNotification: (scrollNotification) {
+                      if (scrollNotification is ScrollUpdateNotification &&
+                          scrollNotification.depth == 0) {
+                        //滚动并且是列表滚动的时候
+                        _onScroll(scrollNotification.metrics.pixels);
+                      }
+                      return false;
+                    },
+                    child: _listView,
+                  ),
+                ),
+              ),
+              _appBar
+            ],
+          ),
+        ));
   }
 
-  // 自定义appBar
+  /// 自定义appBar
   Widget get _appBar {
     return Column(
       children: <Widget>[
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0x66000000), Colors.transparent],
               begin: Alignment.topCenter,
@@ -119,16 +141,28 @@ class _HomePageState extends State<HomePage>
             ),
           ),
           child: Container(
-            padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
             height: 80,
             decoration: BoxDecoration(
                 color:
                     Color.fromARGB((appBarAlpha * 255).toInt(), 255, 255, 255)),
+            child: SearchBar(
+              city: city,
+              searchBarType: appBarAlpha > 0.2
+                  ? SearchBarType.homeLight
+                  : SearchBarType.home,
+              inputBoxClick: _jumpToSearch,
+              speakClick: _jumpToSpeak,
+              defaultText: SEARCH_BAR_DEFAULT_TEXT,
+              leftButtonClick: _jumpToCity,
+              rightButtonClick: () {},
+              onChanged: (String value) {},
+            ),
           ),
         ),
         Container(
           height: appBarAlpha > 0.2 ? 0.5 : 0,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             boxShadow: [
               BoxShadow(color: Colors.black12, blurRadius: 0.5),
             ],
@@ -138,14 +172,42 @@ class _HomePageState extends State<HomePage>
     );
   }
 
+  /// 判断滚动改变透明度
+  void _onScroll(offset) {
+    double alpha = offset / APPBAR_SCROLL_OFFSET;
+    if (alpha < 0) {
+      alpha = 0;
+    } else if (alpha > 1) {
+      alpha = 1;
+    }
+    setState(() {
+      appBarAlpha = alpha;
+    });
+  }
+
+  /// 跳转搜索页面
+  void _jumpToSearch() {
+    //todo
+  }
+
+  /// 跳转语音识别页面
+  void _jumpToSpeak() {
+    //todo
+  }
+
+  /// 跳转到城市列表
+  void _jumpToCity() async {
+    //todo
+  }
+
   //Swiper 用法：https://pub.dev/packages/flutter_swiper
   Widget get _banner {
-    return Container(
+    return SizedBox(
       height: 160,
       child: Swiper(
         autoplay: true,
         loop: true,
-        pagination: SwiperPagination(),
+        pagination: const SwiperPagination(),
         itemCount: bannerList.length,
         itemBuilder: (BuildContext context, int index) {
           return CachedImage(
@@ -164,19 +226,19 @@ class _HomePageState extends State<HomePage>
         _banner,
         /* LOCAL 导航*/
         Padding(
-            padding: EdgeInsets.fromLTRB(7, 4, 7, 4),
+            padding: const EdgeInsets.fromLTRB(7, 4, 7, 4),
             child: LocalNav(localNavList: localNavList)),
         /*网格卡片*/
         Padding(
-            padding: EdgeInsets.fromLTRB(7, 0, 7, 4),
+            padding: const EdgeInsets.fromLTRB(7, 0, 7, 4),
             child: GridNav(gridNavModel: gridNav)),
         /*活动导航*/
         Padding(
-            padding: EdgeInsets.fromLTRB(7, 0, 7, 4),
+            padding: const EdgeInsets.fromLTRB(7, 0, 7, 4),
             child: SubNav(subNavList: subNavList)),
         /*底部卡片*/
         Padding(
-            padding: EdgeInsets.fromLTRB(7, 0, 7, 4),
+            padding: const EdgeInsets.fromLTRB(7, 0, 7, 4),
             child: SalesBox(salesBox: salesBox))
       ],
     );

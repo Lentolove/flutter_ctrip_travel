@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 const TRAVEL_TAB_URL =
     'https://apk-1256738511.cos.ap-chengdu.myqcloud.com/FlutterTrip/data/travel_page.json';
 
-/// 旅拍tab数据管理
+/// 旅拍顶部 Tab 数据接口
 class TravelTabDao {
   static Future<TravelTabModel> fetch() async {
     Response response = await Dio().get(TRAVEL_TAB_URL);
