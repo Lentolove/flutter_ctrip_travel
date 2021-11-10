@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_trip2/dao/home_dao.dart';
 import 'package:flutter_trip2/model/home_model.dart';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
+import 'package:flutter_trip2/pages/city_page.dart';
+import 'package:flutter_trip2/utils/navigation_util.dart';
 import 'package:flutter_trip2/widget/cached_image.dart';
 import 'package:flutter_trip2/widget/grid_nav.dart';
 import 'package:flutter_trip2/widget/loading_container.dart';
@@ -197,7 +199,10 @@ class _HomePageState extends State<HomePage>
 
   /// 跳转到城市列表
   void _jumpToCity() async {
-    //todo
+    String result = await NavigationUtil.push(context, CityPage(city: city));
+    setState(() {
+      city = result;
+    });
   }
 
   //Swiper 用法：https://pub.dev/packages/flutter_swiper
