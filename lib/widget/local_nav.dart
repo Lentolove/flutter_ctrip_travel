@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_trip2/model/home_model.dart';
+import 'package:flutter_trip2/pages/web_view.dart';
+import 'package:flutter_trip2/utils/navigation_util.dart';
 import 'package:flutter_trip2/widget/cached_image.dart';
 
 class LocalNav extends StatelessWidget {
@@ -35,7 +37,14 @@ class LocalNav extends StatelessWidget {
           Text(model.title ?? '', style: TextStyle(fontSize: 12))
         ]),
         onTap: () {
-          //todo
+          NavigatorUtil.push(
+              context,
+              WebViewDiy(
+                initialUrl: model.url,
+                statusBarColor: model.statusBarColor,
+                hideAppBar: model.hideAppBar,
+                title: model.title,
+              ));
         });
   }
 }

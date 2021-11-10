@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_trip2/model/home_model.dart';
+import 'package:flutter_trip2/pages/web_view.dart';
+import 'package:flutter_trip2/utils/navigation_util.dart';
 import 'package:flutter_trip2/widget/cached_image.dart';
 
 class SubNav extends StatelessWidget {
@@ -12,7 +14,7 @@ class SubNav extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(6)),
-      child: Padding(padding: EdgeInsets.all(7), child: _items(context)),
+      child: Padding(padding: const EdgeInsets.all(7), child: _items(context)),
     );
   }
 
@@ -30,7 +32,7 @@ class SubNav extends StatelessWidget {
           children: items.sublist(0, separate),
         ),
         Padding(
-          padding: EdgeInsets.only(top: 10),
+          padding: const EdgeInsets.only(top: 10),
           child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: items.sublist(separate, subNavList.length)),
@@ -43,7 +45,17 @@ class SubNav extends StatelessWidget {
     return Expanded(
       flex: 1,
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          NavigatorUtil.push(
+            context,
+            WebViewDiy(
+              initialUrl: model.url,
+              statusBarColor: model.statusBarColor,
+              hideAppBar: model.hideAppBar,
+              title: model.title,
+            ),
+          );
+        },
         child: Column(
           children: [
             CachedImage(
@@ -52,10 +64,10 @@ class SubNav extends StatelessWidget {
               height: 18,
             ),
             Padding(
-              padding: EdgeInsets.only(top: 3),
+              padding: const EdgeInsets.only(top: 3),
               child: Text(
                 model.title ?? '',
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
               ),
             )
           ],

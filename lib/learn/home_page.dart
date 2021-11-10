@@ -3,6 +3,7 @@ import 'package:flutter_trip2/dao/home_dao.dart';
 import 'package:flutter_trip2/model/home_model.dart';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 import 'package:flutter_trip2/pages/city_page.dart';
+import 'package:flutter_trip2/pages/web_view.dart';
 import 'package:flutter_trip2/utils/navigation_util.dart';
 import 'package:flutter_trip2/widget/cached_image.dart';
 import 'package:flutter_trip2/widget/grid_nav.dart';
@@ -199,7 +200,7 @@ class _HomePageState extends State<HomePage>
 
   /// 跳转到城市列表
   void _jumpToCity() async {
-    String result = await NavigationUtil.push(context, CityPage(city: city));
+    String result = await NavigatorUtil.push(context, CityPage(city: city));
     setState(() {
       city = result;
     });
@@ -219,7 +220,14 @@ class _HomePageState extends State<HomePage>
               imageUrl: bannerList[index].icon, fit: BoxFit.fill);
         },
         onTap: (index) {
-          //
+          NavigatorUtil.push(
+            context,
+            WebViewDiy(
+              initialUrl: bannerList[index].url,
+              hideAppBar: bannerList[index].hideAppBar,
+              title: bannerList[index].title,
+            ),
+          );
         },
       ),
     );

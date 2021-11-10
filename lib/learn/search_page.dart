@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_trip2/dao/search_dao.dart';
 import 'package:flutter_trip2/model/search_model.dart';
+import 'package:flutter_trip2/pages/web_view.dart';
+import 'package:flutter_trip2/utils/navigation_util.dart';
 import 'package:flutter_trip2/widget/search_bar.dart';
 
 const TYPES = [
@@ -97,6 +99,7 @@ class _SearchPageState extends State<SearchPage>
           hint: widget.hint ?? SEARCH_BAR_DEFAULT_TEXT,
           leftButtonClick: () {
             //todo
+            Navigator.pop(context);
           },
           onChanged: _onTextChange,
           speakClick: _jumpToSpeak,
@@ -118,7 +121,13 @@ class _SearchPageState extends State<SearchPage>
     SearchItem item = searchModel!.data[position];
     return GestureDetector(
       onTap: () {
-        //todo 跳转到详情页
+        NavigatorUtil.push(
+          context,
+          WebViewDiy(
+            initialUrl: item.url.replaceAll('http', 'https'),
+            title: '详情',
+          ),
+        );
       },
       child: Container(
         padding: const EdgeInsets.all(10),

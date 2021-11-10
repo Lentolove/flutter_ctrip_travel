@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_trip2/model/home_model.dart';
+import 'package:flutter_trip2/pages/web_view.dart';
+import 'package:flutter_trip2/utils/navigation_util.dart';
 import 'package:flutter_trip2/widget/cached_image.dart';
 
 //网格布局，包括三行
@@ -115,6 +117,7 @@ class GridNav extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
               border: Border(
+
                   ///如果是上面的第一个，底部需要留一点间距
                   left: borderSide,
                   bottom: isFirst ? borderSide : BorderSide.none)),
@@ -135,7 +138,14 @@ class GridNav extends StatelessWidget {
   Widget _wrapGesture(BuildContext context, Widget widget, CommonModel model) {
     return GestureDetector(
       onTap: () {
-        //todo
+        NavigatorUtil.push(
+            context,
+            WebViewDiy(
+              initialUrl: model.url,
+              statusBarColor: model.statusBarColor,
+              hideAppBar: model.hideAppBar,
+              title: model.title,
+            ));
       },
       child: widget,
     );

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_trip2/dao/travel_dao.dart';
 import 'package:flutter_trip2/model/travel_model.dart';
+import 'package:flutter_trip2/pages/web_view.dart';
+import 'package:flutter_trip2/utils/navigation_util.dart';
 import 'package:flutter_trip2/widget/cached_image.dart';
 import 'package:flutter_trip2/widget/loading_container.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -125,7 +127,17 @@ class _TravelItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        if (item.article.urls.isNotEmpty) {
+          NavigatorUtil.push(
+            context,
+            WebViewDiy(
+              initialUrl: item.article.urls[0].h5Url,
+              title: '详情',
+            ),
+          );
+        }
+      },
       child: Card(
         child: PhysicalModel(
           color: Colors.transparent,

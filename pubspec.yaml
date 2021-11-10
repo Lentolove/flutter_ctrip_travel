@@ -56,6 +56,9 @@ dev_dependencies:
   #汉字转拼音
   lpinyin: ^2.0.3
 
+  #加载网页的WebView
+  webview_flutter: ^2.0.10
+
 
 
 # For information on the generic Dart part of this file, see the
