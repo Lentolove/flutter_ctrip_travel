@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_trip2/pages/web_view.dart';
 
-//home 首页
+/// 我的首页 直接显示h5界面
 class MyPage extends StatefulWidget {
   MyPage({Key? key}) : super(key: key);
 
@@ -24,9 +25,11 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("我的")),
-      body: Center(
-        child: Text("我的"),
+      body: WebViewDiy(
+        initialUrl: 'https://m.ctrip.com/webapp/myctrip/',
+        hideAppBar: true,
+        backForbid: true,
+        statusBarColor: '4c5bca',
       ),
     );
   }

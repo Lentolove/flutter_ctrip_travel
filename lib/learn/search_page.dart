@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_trip2/dao/search_dao.dart';
 import 'package:flutter_trip2/model/search_model.dart';
+import 'package:flutter_trip2/pages/speak_page.dart';
 import 'package:flutter_trip2/pages/web_view.dart';
 import 'package:flutter_trip2/utils/navigation_util.dart';
 import 'package:flutter_trip2/widget/search_bar.dart';
@@ -98,7 +99,6 @@ class _SearchPageState extends State<SearchPage>
           defaultText: widget.keyword ?? '',
           hint: widget.hint ?? SEARCH_BAR_DEFAULT_TEXT,
           leftButtonClick: () {
-            //todo
             Navigator.pop(context);
           },
           onChanged: _onTextChange,
@@ -112,7 +112,7 @@ class _SearchPageState extends State<SearchPage>
 
   /// 跳转语音识别页面
   void _jumpToSpeak() {
-    //todo
+    NavigatorUtil.push(context, const SpeakPage());
   }
 
   ///搜索结果每一个 item的样式
